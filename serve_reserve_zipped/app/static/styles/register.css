@@ -1,0 +1,9 @@
+a
+{
+    text-decoration:none;
+}
+  
+#name_instructions, #email_instructions, #password_instructions, #confirm_pword_instructions, #terms_conditions, #message, .hidden_role
+{
+    display:none;
+}

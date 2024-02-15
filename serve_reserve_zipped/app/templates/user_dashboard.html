@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/user_dashboard.css')}}">
+    <title>User Dashboard</title>
+  </head>
+  <body class="bg-purp">
+    <nav class="navbar navbar-dark bg-blk d-flex justify-content-between">
+      <a class="navbar-brand mx-2 mt-0 text-center large-serve" href="#">Serve<small class="txt-purp small-serve"> Reserve</small></a>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-light mx-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{user.firstname}}
+          </a>
+          <div class="dropdown-menu position-absolute dropdown-menu-end bg-blk" aria-labelledby="navbarDropdown">
+            <p class="dropdown-item btn btn-md txt-white" data-bs-toggle="modal" data-bs-target="#profile_modal">Edit Profile</p>
+            <p class="dropdown-item btn btn-md btn-outline-light txt-white" data-bs-toggle="modal" data-bs-target="#change_pword_modal">Change Password</p>
+            <p class="dropdown-item btn btn-md btn-outline-light txt-white" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete Account</p>
+            <div class="dropdown-divider border-top-peach"></div>
+            <a class="dropdown-item txt-peach" href="{{url_for('auth_routes.logout')}}">Logout</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+    {% if message %}
+      <p id="message">{{message}}<p>
+    {% endif %}
+    <div class="container page-container mt-2 d-flex align-items-center">
+      <div class="col-12 col-lg-8 col-xl-6 container card border-heavy-white shadow bg-blk py-3">
+        <!-- Date Selection -->
+        <div class="row d-flex justify-content-center">
+          <div class="col-12 text-center text-dark mt-2">
+            <input type="date" class="w-50 text-center" id="date">
+          </div>
+        </div>
+        <!-- Court Schedule  -->
+        <div class="row d-flex flex-wrap justify-content-center">
+          <div class="col-12 text-center">
+            <div class="btn-group btn-group-toggle container d-flex justify-content-evenly mt-2" data-toggle="buttons">
+              <label class="btn-court-active mx-2 px-3" id="grass_one" >
+                <input type="radio" name="courts" id="grass_one" class="court_radio" autocomplete="off" checked> Grass 1
+              </label>
+              <label class="btn-court mx-2 px-3" id="grass_two">
+                <input type="radio" name="courts" id="grass_two" class="court_radio" autocomplete="off"> Grass 2
+              </label>
+              <label class="btn-court mx-2 px-3" id="clay_one">
+                <input type="radio" name="courts" id="clay_one" class="court_radio" autocomplete="off"> Clay
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="container mt-2">
+          <div class="row d-flex flex-wrap justify-content-center button-ctn">
+            <div class="col-12 text-center text-light d-flex flex-column justify-content-between" id="button-container">
+              <p id="hidden_u">{{user.username}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Notifications -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11" id="toast_div">
+    </div>
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profile_modal" tabindex="-1" aria-labelledby="profile_modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered  modal-md">
+          <div class="modal-content modal-styl border-heavy-white">
+            <div class="modal-header bg-purp border-btm-lite">
+              <h5 class="modal-title text-center txt-blk">Profile</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Profile Form -->
+            <form method="POST" action="{{ url_for('user_routes.update_profile') }}" class="h-75 w-100">
+              <div class="modal-body">
+                <p class="lead">Personal Details</p>
+                <table class="table">
+                    <tr class="w-100 border-bottom border-top profile_row">
+                        <td class="w-40">First Name:</td>
+                        <td class="w-50"><input type="text" name="firstname" id="firstname" value="{{user.firstname}}" class="profile_input"></td>
+                        <td class="w-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                            </svg>
+                        </td>
+                    </tr>
+                    <tr class="w-100 border-bottom profile_row">
+                        <td class="w-40">Surname:</td>
+                        <td class="w-50"><input type="text" name="lastname" id="lastname" value="{{user.lastname}}" class="profile_input"></td>
+                        <td class="w-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                            </svg>
+                        </td>
+                    </tr>
+                </table>
+                <p class="lead">Address</p>
+                <table class="table">
+                    <tr class="w-100 border-bottom border-top profile_row">
+                        <td class="w-40">House Number:</td>
+                        <td class="w-50"><input type="text" name="housenum" id="housenum" value="{{user.housenum}}" class="profile_input"></td>
+                        <td class="w-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                            </svg>
+                        </td>
+                    </tr>
+                    <tr class="w-100 border-bottom profile_row">
+                        <td class="w-40">Street:</td>
+                        <td class="w-50"><input type="text" name="street" id="street" value="{{user.street}}" class="profile_input"></td>
+                        <td class="w-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                            </svg>
+                        </td>
+                    </tr>
+                    <tr class="w-100 border-bottom profile_row">
+                        <td class="w-40">Town:</td>
+                        <td class="w-50"><input type="text" name="town" id="town" value="{{user.town}}" class="profile_input"></td>
+                        <td class="w-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                            </svg>
+                        </td>
+                    </tr>
+                    <tr class="w-100 border-bottom profile_row">
+                        <td class="w-40">Postcode:</td>
+                        <td class="w-50"><input type="text" name="postcode" id="postcode" value="{{user.postcode}}" class="profile_input"></td>
+                        <td class="w-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                            </svg>
+                        </td>
+                    </tr>
+                </table>
+                <p class="lead">Contact Details</p>
+                <table class="table">
+                    <tr class="w-100 border-bottom row_disabled">
+                        <td class="w-40">Email:</td>
+                        <td class="w-50"><input type="email" name="email" id="email" value="{{user.email}}" disabled class="profile_input"><input type="hidden" name="hidden_email" value="{{user.email}}"></td>
+                        <td class="w-10"></td>
+                    </tr>
+                    <tr class="w-100 border-bottom profile_row">
+                        <td class="w-40">Phone Number:</td>
+                        <td class="w-50"><input type="text" name="phonenum" id="phonenum" value="{{user.phonenumber}}" class="profile_input"></td>
+                        <td class="w-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                            </svg>
+                        </td>
+                    </tr>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-purp" data-bs-dismiss="modal" value="Save">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="change_pword_modal" tabindex="-1" aria-labelledby="change_pword_modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content modal-styl">
+          <div class="modal-header bg-purp border-btm-white">
+            <h5 class="modal-title txt-blk">Change Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <!-- Change Password Form -->
+          <form method="POST" action="{{ url_for('user_routes.change_password') }}">
+            <div class="modal-body">
+              <input type="password" name="new_pword" class="form-control core-input text-light" id="new_pword" placeholder="New Password:">
+              <div class="col-12 text-center" id="password_instructions">
+                <small>Passwords must be 8-16 characters, containing at least 1 digit and 1 capital letter</small>
+                </div>
+              <input type="password" name="change_pword" class="form-control mt-2 core-input" id="confirm_pass_inp" placeholder="Confirm Password:">
+              <div class="col-12 text-center" id="confirm_pword_instructions">
+                <small>Passwords do not match!</small>
+              </div>
+            </div>
+            <div class="modal-footer border-top-white">
+              <button type="submit" class="btn btn-purp" data-bs-dismiss="modal" value="reset" id="change_pword_btn" disabled>Change</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Delete Account Modal -->
+    <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="delete_modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content modal-styl">
+          <div class="modal-header bg-peach border-btm-white">
+            <h5 class="modal-title txt-blk">Delete Account</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <!-- Delete Account Form -->
+          <form method="POST" action="{{ url_for('user_routes.delete_account') }}">
+            <div class="modal-body">
+              <input type="password" id="delete_pword" name="delete_pword" class="form-control danger-input" placeholder="Password:">
+              <input type="password" name="confirm_delete_pword" class="form-control mt-2 danger-input" id="confirm_delete_pword" placeholder="Change Password:">
+              <small class="text-center mt-2 txt-white" id="delete_warning">This process is irreversible and all data held will be deleted.</small>
+              <div class="row">
+                <div class="col-12 d-flex justify-content-center mt-2">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer border-top-white">
+              <button type="submit" class="btn btn-peach" value="reset" id="final_delete_btn" disabled>Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  <script type="module" src="{{ url_for('static', filename='scripts/user_dashboard.js') }}"></script> 
+  <script type="module" src="{{ url_for('static', filename='scripts/main.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+
+<!-- <button class="btn btn-sm btn-available shadow w-100 book-btn" value="7:00am" id="7">7:00am</button>
+<button class="btn btn-sm btn-available shadow w-100 book-btn" value="8:00am" id="8">8:00am</button>
+<button disabled class="btn btn-sm btn-unavailable shadow w-100 book-btn" value="9:00am" id="9">Unavailable</button>
+<button class="btn btn-sm btn-cancel shadow w-100 book-btn" value="10:00am" id="10">Cancel</button>
+<button class="btn btn-sm btn-available shadow w-100 book-btn" value="11:00am" id="11">11:00am</button>
+<button class="btn btn-sm btn-cancel shadow w-100 book-btn" value="12:00pm" id="12">Cancel</button>
+<button class="btn btn-sm btn-available shadow w-100 book-btn" value="13:00pm" id="13">13:00pm</button>
+<button class="btn btn-sm btn-available shadow w-100 book-btn" value="14:00pm" id="14">14:00pm</button>
+<button class="btn btn-sm btn-available shadow w-100 book-btn" value="15:00pm" id="15">15:00pm</button>
+<button class="btn btn-sm btn-available shadow w-100 book-btn" value="16:00pm" id="16">16:00pm</button>
+<button class="btn btn-sm btn-available shadow w-100 book-btn" value="17:00pm" id="17">17:00pm</button>
+<button class="btn btn-sm btn-cancel shadow w-100 book-btn" value="18:00pm" id="18">Cancel</button>
+<button class="btn btn-sm btn-unavailable shadow w-100 book-btn" value="19:00pm" id="19" disabled>Unavailable</button> -->

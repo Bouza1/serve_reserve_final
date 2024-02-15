@@ -1,0 +1,15 @@
+a
+{
+  text-decoration:none;
+}
+
+#message
+{
+  display:none;
+}
+
+
+#email_instructions, #password_instructions, #reset_email_instructions
+{
+  display:none;
+}

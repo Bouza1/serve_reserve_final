@@ -1,0 +1,75 @@
+#name_instructions, #email_instructions, #message
+{
+    display:none;
+}
+
+#court_table
+{
+    min-height: 80vh;
+}
+
+.bg-blk td
+{
+    background-color: #1E1E1E;
+    color:whitesmoke;
+}
+
+
+#court_table td
+{
+    background-color: #1E1E1E;
+    color:whitesmoke;
+}
+
+#court_table th
+{
+    background-color: #1E1E1E;
+    color:whitesmoke;
+}
+
+.border-lght{
+    border:2px solid whitesmoke;
+}
+
+.next_user_btn, .next_user_btn:hover, .next_user_btn:focus
+{
+    border:none;
+}
+
+.table .profile_row:hover {
+    background-color: #1E1E1E; 
+}
+  
+.table .profile_row td {
+    background-color: #1E1E1E;
+    color:whitesmoke;
+}
+
+.row_disabled td
+{
+    background-color: #1E1E1E;
+    color:whitesmoke;
+}
+
+.row_disabled input
+{
+    color:#9395d2
+}
+
+
+.profile_input
+{
+    background-color: #1E1E1E;
+    color:whitesmoke;
+}
+
+#edit-pencil
+{
+    visibility: hidden;
+}
+
+.profile_input
+{
+    border:none;
+    width:100%;
+}

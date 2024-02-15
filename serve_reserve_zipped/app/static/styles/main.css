@@ -1,0 +1,290 @@
+/* ====================== Layouts ====================== */
+
+#whole-page /* AI */
+{
+    min-height: 100svh;
+    display: flex; /* AI */
+    justify-content: center; /* AI */
+    align-items: center; /* AI */
+}
+  
+#content-container /* AI */
+{
+    margin:auto;
+    height:75vh; /* AI */
+    width:100%; 
+}
+  
+.custom-div
+{
+    width: 100%;
+}
+  
+#ten 
+{
+    height: 3vh;
+}
+  
+#fifty 
+{
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    height: 38vh;
+}
+  
+#fourty 
+{
+    height: 33.5vh;
+    display: flex;
+    align-items: center;
+}
+  
+.fifty-img
+{
+    max-height:37vh;
+}
+
+/* ====================== Background ====================== */
+.bg-purp
+{
+    background-color:#9F9DFF;
+}
+
+.bg-peach
+{
+    background-color:#FDC5C5;
+}
+
+.bg-blk
+{
+    background-color: #1E1E1E;
+}
+
+
+/* ====================== Text ====================== */
+
+.txt-white
+{
+    color:whitesmoke;
+}
+
+.txt-purp
+{
+    color:#9F9DFF;
+}
+
+.txt-blk
+{
+    color:black;
+}
+
+.txt-peach
+{
+    color:#FDC5C5;
+}
+/* ====================== Core Buttons ====================== */
+/* ===== Purple ===== */
+.btn-purp
+{
+    background-color:#9F9DFF;
+    color:black;
+    border:3px solid whitesmoke;
+}
+
+.btn-purp:hover, .btn-purp:disabled, .btn-purp:focus, .btn-purp:active
+{
+    background-color:#b3b7ed;
+    color:black;
+    border:3px solid whitesmoke;
+}
+/* ===== Peach ===== */
+.btn-peach
+{
+    background-color:#FDC5C5;
+    color:black;
+    border:3px solid whitesmoke;
+}
+
+.btn-peach:hover, .btn-peach:disabled, .btn-peach:focus, .btn-peach:active
+{
+    background-color:#FDC5C5;
+    color:black;
+    border:3px solid whitesmoke;
+}
+/* ======== Booking Buttons ======== */
+.btn-available, .btn-available:disabled
+{
+    background-color:#9F9DFF;
+    color:black;
+    border:4px solid whitesmoke;
+}
+
+.btn-available:hover
+{
+    background-color:#b3b7ed;
+    color:black;
+    border:4px solid whitesmoke;
+}
+
+
+.btn-unavailable, .btn-unavailable:disabled
+{
+    background-color:#352F44;
+    color:black;
+    border:4px solid whitesmoke;
+}
+
+.btn-cancel:hover
+{
+  background-color:#FDC5C5;
+  color:black;
+  border:4px solid whitesmoke;
+}
+
+.btn-cancel, .btn-cancel:disabled{
+    background-color:#FDC5C5;
+    color:black;
+    border:4px solid whitesmoke;
+}
+
+/* ====================== Nav Bar ====================== */
+/* ========== AI START ========== */
+.navbar-brand small {
+    display: block; /* Display the small text on a new line */
+    font-size: 0.6em; /* Adjust the font size as needed */
+    margin-top: -0.4rem; /* Add some space between "Serve" and "reserve" */
+  }
+/* ========== AI END ========== */
+
+.small-serve{
+    padding-top: -10px;
+}
+/* ====================== Borders ====================== */
+.border-blk
+{
+    border:4px solid black;
+}
+
+.border-top-peach
+{
+    border-top:4px solid #FDC5C5;;
+}
+
+.border-heavy-white
+{
+    border:4px solid whitesmoke;
+}
+
+.border-btm-white
+{
+    border-bottom:4px solid whitesmoke;
+}
+
+.border-top-white
+{
+    border-top:4px solid whitesmoke;
+}
+
+
+.border-purp
+{
+    border:4px solid #9F9DFF;
+}
+
+/* ====================== Widths ====================== */
+.w-10
+{
+    width:10%;
+}
+.w-25
+{
+    width:25%
+}
+
+.w-40
+{
+    width:40%;
+}
+
+  
+.w-50
+{
+    width:40%;
+}
+
+.w-60
+{
+    width:60%;
+}
+
+/* ====================== Modals ====================== */
+.modal-styl
+{
+    color:whitesmoke;
+    background-color: #1E1E1E;
+    border:4px solid whitesmoke;
+    border-radius:12px
+}
+
+/* ====================== Notifcations ====================== */
+.notifcation-styl
+{
+    color:whitesmoke;
+    background-color: #1E1E1E;
+    border:4px solid white;
+}
+
+.notifcation_head
+{
+    border-bottom: 2px solid white;
+    border-radius:0;
+    color:black;
+}
+.notify_success
+{
+    background-color:#9F9DFF;
+}
+.notify_warning
+{
+    background-color:#FDC5C5;
+}
+.notify_danger
+{
+    background-color:#352F44;
+    color:whitesmoke;
+}
+
+/* ====================== Core Input Styling ====================== */
+.core-input, .core-input:hover, .core-input:focus
+{
+    background-color: #1E1E1E;
+    color:whitesmoke;
+    border:3px solid #9F9DFF;
+}
+.core-input::placeholder 
+{
+    color:#9F9DFF;
+}
+
+.danger-input, .danger-input:hover, .danger-input:focus
+{
+    background-color: #1E1E1E;
+    color:whitesmoke;
+    border:3px solid #FDC5C5;
+}
+.danger-input::placeholder 
+{
+    color:#FDC5C5;
+}
+
+.dropdown-menu {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.date-input
+{
+    background-color: whitesmoke;
+    color:#1E1E1E;
+}

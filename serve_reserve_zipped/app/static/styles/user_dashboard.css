@@ -1,0 +1,92 @@
+.page-container
+{
+    min-height:90vh;
+}
+  
+#hidden_u, #password_instructions, #confirm_pword_instructions, #delete_warning, #message, .hidden-input
+{
+    display:none;
+}
+  
+.button-ctn 
+{
+    min-height:70vh;
+}
+
+
+.btn-court-active, .btn-court-active:hover, .btn-court-active:focus
+{
+    border:none;
+    border-bottom: double;
+    color:whitesmoke;
+}
+
+.btn-court, .btn-court:hover, .btn-court:focus
+{
+    border:none;
+    color:#9395d2
+}
+
+.court_radio
+{
+    display: none;
+}
+
+#edit-pencil
+{
+    visibility: hidden;
+}
+
+.profile_input
+{
+    border:none;
+    width:100%;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+  
+.table .profile_row:hover {
+    background-color: #1E1E1E; 
+}
+  
+.table .profile_row td {
+    background-color: #1E1E1E;
+    color:whitesmoke;
+}
+
+.row_disabled td
+{
+    background-color: #1E1E1E;
+    color:whitesmoke;
+}
+
+.row_disabled input
+{
+    color:#9395d2
+}
+
+
+.profile_input
+{
+    background-color: #1E1E1E;
+    color:whitesmoke;
+}
+
+.modal_input, .modal_input:hover, .modal_input:focus
+{
+    background-color: #1E1E1E;
+    color:whitesmoke;
+    border:2px solid whitesmoke;
+}
+
+.modal_input::placeholder 
+{
+    color: whitesmoke;
+}
+
+
+
+/* ================ END AI ==================== */

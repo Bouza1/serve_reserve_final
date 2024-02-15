@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{url_for('static', filename='styles/admin_dashboard.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='styles/main.css')}}">
+        <title>Admin Dashboard</title>
+    </head>
+    <body class="bg-purp">
+        <nav class="navbar navbar-dark bg-blk d-flex justify-content-between">
+            <a class="navbar-brand mx-2 mt-0 text-center large-serve" href="#">Serve<small class="txt-purp small-serve"> Reserve</small></a>
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-light mx-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{user.firstname}}
+                </a>
+                <div class="dropdown-menu position-absolute dropdown-menu-end bg-blk" aria-labelledby="navbarDropdown">
+                  <p class="dropdown-item btn btn-md txt-white" data-bs-toggle="modal" data-bs-target="#profile_modal">Edit Profile</p>
+                  <p class="dropdown-item btn btn-md btn-outline-light txt-white" data-bs-toggle="modal" data-bs-target="#change_pword_modal">Change Password</p>
+                  <div class="dropdown-divider border-top-peach"></div>
+                  <a class="dropdown-item txt-peach" href="{{url_for('auth_routes.logout')}}">Logout</a>
+                </div>
+              </li>
+            </ul>
+        </nav>
+        <div class="container">
+        {% if message %}
+            <p id="message">{{message}}<p>
+        {% endif %}
+            <div class="row">
+                <div class="col-4 col-lg-4">
+                    <div class="col-12">
+                        <!-- Create User Section -->
+                        <div class="card border-heavy-white bg-blk txt-white rounded mt-2 p-2">
+                            <!-- Create User Form -->
+                            <form class="text-center" method="POST" action="{{url_for('admin_routes.create_user')}}">
+                                <label class="text-center">New User</label>
+                                <div class="row">
+                                    <div class="col-6 mt-2">
+                                        <input type="text" name="firstname" class="form-control core-input" placeholder="First Name:" required id="fname_inp">
+                                    </div>
+                                    <div class="col-6 mt-2">
+                                        <input type="text" name="lastname" class="form-control core-input" placeholder="Last Name:" required id="lname_inp">
+                                    </div> 
+                                </div>
+                                <div class="col-12 text-center my-2" id="name_instructions">
+                                    <small>First Name Must Be At Least 3 Characters</small>
+                                </div>                            
+                                <div class="col-12 mt-2">
+                                    <input type="email" class="form-control w-100 core-input" name="email" placeholder="Email:" required id="email_inp">
+                                </div>    
+                                <div class="col-12 mt-2">
+                                    <input type="email" class="form-control w-100 core-input" name="confirm_email" placeholder="Confirm Email:" required id="email_confirm_inp">
+                                </div>   
+                                <div class="col-12 text-center mt-2" id="email_instructions">
+                                    <small class="">Invalid Email!</small>
+                                </div>   
+                                <div class="col-12 text-center d-flex justify-content-evenly mt-2">
+                                    <div class="form-group text-center">
+                                        <label class="form-check-label" for="userRadio">User</label></br>
+                                        <input class="form-check-input" type="radio" name="role" id="userRadio" value="user">
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <label class="form-check-label" for="adminRadio">Admin</label></br>
+                                        <input class="form-check-input" type="radio" name="role" id="adminRadio" value="admin">
+                                    </div>                            
+                                </div>    
+                                <div class="col-12 text-center mt-2">
+                                    <button type="submit" class="btn btn-purp" value="create" id="create_user_btn" disabled>Create</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- User Details Section -->
+                    <div class="col-12">
+                        <div class="card shadow border-heavy-white bg-blk txt-white rounded mt-2 p-2">
+                            <div class="row p-2">
+                                <div class="col-12">
+                                    <select class="select core-input rounded w-100 p-2 user_selects" id="usersearch">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-12">
+                                    <table class="table table-hover table-dark table-striped-columns text-light">
+                                        <tr>
+                                            <td class="w-25 bg-blk">First Name:</td>
+                                            <td class="w-75" id="search_firstname"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w-25 bg-blk">Surname:</td>
+                                            <td class="w-75" id="search_lastname"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w-25 bg-blk">Membership:</td>
+                                            <td class="w-75" id="search_role"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w-25 bg-blk">Email:</td>
+                                            <td class="w-75" id="search_email"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w-25 bg-blk">Phone:</td>
+                                            <td class="w-75" id="search_phone"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 text-center">
+                                    <button class="btn btn-sm w-100 btn-purp" id="delete-users-profile">Delete</button>
+                                </div>
+                                <div class="col-4 text-center">
+
+                                </div>
+                                <div class="col-4 text-right">
+                                    <button class="btn btn-sm w-100 btn-purp" id="open-users-profile">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Court Schedule -->
+                <div class="col-8">
+                    <div class="card shadow border-heavy-white bg-blk txt-white rounded mt-2 p-2">
+                        <div class="col-12 text-center">
+                           <input type="date" class="w-25 text-center date-input" id="date"> 
+                        </div>
+                        <div class="col-12">
+                            <table class="table bg-grey table-hover w-100" id="court_table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th class="w10"></th>
+                                        <th class="w30">Grass One</th>
+                                        <th class="w30">Grass Two</th>
+                                        <th class="w30">Clay</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>7:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>8:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>9:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>11:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>12:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>13:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>14:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>15:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>16:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>17:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>18:00</td>
+                                        <td class="grass_one_holder"></td>
+                                        <td class="grass_two_holder"></td>
+                                        <td class="clay_one_holder"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- View Booking Modal -->
+            <div class="modal fade" id="view_booking_modal" tabindex="-1" aria-labelledby="view_booking_modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content modal-styl">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Booking Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table bg-blk">
+                            <tr>
+                                <td>Date:</td>
+                                <td id="view_booking_date"></td>
+                            </tr>
+                            <tr>
+                                <td>Court:</td>
+                                <td id="view_booking_court"></td>
+                            </tr>
+                            <tr>
+                                <td>Time:</td>
+                                <td id="view_booking_time"></td>
+                            </tr>
+                            <tr>
+                                <td>Booked By:</td>
+                                <td id="view_booking_user"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-purp" id="cancel_booking_btn">Cancel</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <!-- Notificaitons -->
+            <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11" id="toast_div">
+
+            </div>
+            <!-- Create Booking Modal -->
+            <div class="modal fade" id="create_booking_modal" tabindex="-1" aria-labelledby="create_booking_modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content modal-styl">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Create Booking</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table bg-blk">
+                            <tr>
+                                <td class="w-25">Date:</td>
+                                <td id="new_booking_date"></td>
+                            </tr>
+                            <tr>
+                                <td class="w-25">Court:</td>
+                                <td id="new_booking_court"></td>
+                            </tr>
+                            <tr>
+                                <td class="w-25">Time:</td>
+                                <td id="new_booking_time"></td>
+                            </tr>
+                            <tr>
+                                <td class="w-25">For:</td>
+                                <td>
+                                    <select class="select core-input rounded w-100 p-2 user_selects" id="new_booking_user">
+                                    </select>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-purp" id="create_booking_btn" disabled>Create</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <!-- Profile Modal -->
+            <div class="modal fade" id="profile_modal" tabindex="-1" aria-labelledby="profile_modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                    <div class="modal-content modal-styl border-heavy-white">
+                        <div class="modal-header bg-purp border-btm-lite">
+                        <h5 class="modal-title text-center txt-blk">Profile</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <!-- Profile Form -->
+                        <form method="POST" action="{{ url_for('user_routes.update_profile') }}" class="h-75 w-100">
+                        <div class="modal-body">
+                            <p class="lead">Personal Details</p>
+                            <table class="table">
+                                <tr class="w-100 border-bottom border-top profile_row">
+                                    <td class="w-40">First Name:</td>
+                                    <td class="w-50"><input type="text" name="firstname" id="firstname" value="{{user.firstname}}" class="profile_input"></td>
+                                    <td class="w-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                                <tr class="w-100 border-bottom profile_row">
+                                    <td class="w-40">Surname:</td>
+                                    <td class="w-50"><input type="text" name="lastname" id="lastname" value="{{user.lastname}}" class="profile_input"></td>
+                                    <td class="w-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p class="lead">Address</p>
+                            <table class="table">
+                                <tr class="w-100 border-bottom border-top profile_row">
+                                    <td class="w-40">House Number:</td>
+                                    <td class="w-50"><input type="text" name="housenum" id="housenum" value="{{user.housenum}}" class="profile_input"></td>
+                                    <td class="w-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                                <tr class="w-100 border-bottom profile_row">
+                                    <td class="w-40">Street:</td>
+                                    <td class="w-50"><input type="text" name="street" id="street" value="{{user.street}}" class="profile_input"></td>
+                                    <td class="w-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                                <tr class="w-100 border-bottom profile_row">
+                                    <td class="w-40">Town:</td>
+                                    <td class="w-50"><input type="text" name="town" id="town" value="{{user.town}}" class="profile_input"></td>
+                                    <td class="w-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                                <tr class="w-100 border-bottom profile_row">
+                                    <td class="w-40">Postcode:</td>
+                                    <td class="w-50"><input type="text" name="postcode" id="postcode" value="{{user.postcode}}" class="profile_input"></td>
+                                    <td class="w-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p class="lead">Contact Details</p>
+                            <table class="table">
+                                <tr class="w-100 border-bottom row_disabled">
+                                    <td class="w-40">Email:</td>
+                                    <td class="w-50"><input type="email" name="email" id="email" value="{{user.email}}" disabled class="profile_input"><input type="hidden" name="hidden_email" id="hidden_email" value="{{user.email}}"></td>
+                                    <td class="w-10"></td>
+                                </tr>
+                                <tr class="w-100 border-bottom profile_row">
+                                    <td class="w-40">Phone Number:</td>
+                                    <td class="w-50"><input type="text" name="phonenum" id="phonenum" value="{{user.phonenumber}}" class="profile_input"></td>
+                                    <td class="w-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9395d2" class="bi bi-pencil-fill" viewBox="0 0 16 16" id="edit-pencil">
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-purp" data-bs-dismiss="modal" value="Save">Save</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Delete Account Modal -->
+            <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="delete_modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-md">
+                <div class="modal-content modal-styl">
+                    <div class="modal-header bg-peach border-btm-white">
+                    <h5 class="modal-title txt-blk">Delete Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- Delete Account Form -->
+                    <form method="POST" action="{{ url_for('admin_routes.delete_account') }}">
+                    <div class="modal-body">
+                        <p>Please Confirm the Correct User is Listed Below:</p>
+                        <p id="users_email"></p>
+                        <p>Please Enter Your Password To Enable Deletion:</p>
+                        <input type="hidden" id="email_delete"  name="email_delete">
+                        <input type="password" id="delete_pword" name="delete_pword" class="form-control danger-input" placeholder="Password:">
+                        <input type="password" name="confirm_delete_pword" class="form-control mt-2 danger-input" id="confirm_delete_pword" placeholder="Change Password:">
+                        <div class="row">
+                        <div class="col-12 d-flex justify-content-center mt-2">
+                            <small class="text-center mt-2 txt-white" id="delete_warning">This process is irreversible and all data held will be deleted.</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-white">
+                        <button type="submit" class="btn btn-peach" value="reset" id="final_delete_btn" disabled>Delete</button>
+                    </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+            <!-- Change Password Modal -->
+            <div class="modal fade" id="change_pword_modal" tabindex="-1" aria-labelledby="change_pword_modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-md">
+                <div class="modal-content modal-styl">
+                    <div class="modal-header bg-purp border-btm-white">
+                    <h5 class="modal-title txt-blk">Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- Change Password Form -->
+                    <form method="POST" action="{{ url_for('user_routes.change_password') }}">
+                    <div class="modal-body">
+                        <input type="password" name="new_pword" class="form-control core-input text-light" id="new_pword" placeholder="New Password:">
+                        <div class="col-12 text-center" id="password_instructions">
+                        <small>Passwords must be 8-16 characters, containing at least 1 digit and 1 capital letter</small>
+                        </div>
+                        <input type="password" name="change_pword" class="form-control mt-2 core-input" id="confirm_pass_inp" placeholder="Confirm Password:">
+                        <div class="col-12 text-center" id="confirm_pword_instructions">
+                        <small>Passwords do not match!</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-white">
+                        <button type="submit" class="btn btn-purp" data-bs-dismiss="modal" value="reset" id="change_pword_btn" disabled>Change</button>
+                    </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+        <script type="module" src="{{ url_for('static', filename='scripts/admin_dashboard.js') }}"></script> 
+        <script type="module" src="{{ url_for('static', filename='scripts/main.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+    </body>
+</html>
