@@ -1,4 +1,4 @@
-# Serve Reserve Tennis Booking Application
+# Serve Reserve Tennis Court Management System
 
 ## To Run:
 - Fork Repository
@@ -8,7 +8,7 @@
   - ``` pip install -r requirements.txt ```
   - ``` py run.py ```
 
-The application requries enivornment variables, access may be granted on request.
+The application requries enivornment variables, access may be granted upon request.
 
 ## Testing:
 Tests Do Not Run In The Command Line!
