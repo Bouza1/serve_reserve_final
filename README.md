@@ -7,10 +7,11 @@
   - ``` venv/Scripts/activate ```
   - ``` pip install -r requirements.txt ```
   - ``` py run.py ```
+
 The application requries enivornment variables, access may be granted on request.
 
 ## Testing:
-Tests Do Not Run In The Command Line! Could Not Resolve The Issue
+Tests Do Not Run In The Command Line!
 - ALL 60 Tests Pass 
 
 To Run Tests:
