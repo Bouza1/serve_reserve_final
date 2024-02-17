@@ -10,10 +10,8 @@ export class AdminDay
         this.buttons = {'grass_one':[], 'grass_two':[], 'clay_one':[]}
     }
 
-    // ============================== AI START ==============================
     getTimesPromise(court) 
     {
-      // Asynchronously retrieves booked times for a specified court on selected date'.
         return new Promise(async (resolve, reject) => {
           try {
             const response = await fetch('/api/times_booked', {
@@ -35,13 +33,10 @@ export class AdminDay
           }
         });
     }
-    // ============================== AI END ==============================
     
     returnAllTimes()
     {
-      // Asynchronously retrieves booked times for a all 3 courts on selected date'.
       this.disableAllCourts()
-        // ============================== AI END ==============================
         const promises = this.courts.map(court => this.getTimesPromise(court));
         Promise.all(promises)
             .then(resultsArray => {
@@ -52,7 +47,6 @@ export class AdminDay
             .catch(error => {
                 console.error('Error:', error);
             });
-        // ============================== AI END ==============================
     }
 
     loadCourt(court_element, court)
@@ -200,15 +194,11 @@ export class AdminDay
       return startTime + " - " + endTime
     }
 
-    // ======================================= AI START =======================================
     formatDate() 
     {
       const dateObject = new Date(this.day);
-      // Get the day of the week
       const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       const dayOfWeek = daysOfWeek[dateObject.getDay()];
-
-      // Get the day with the correct ordinal suffix
       const day = dateObject.getDate();
       const suffix = (day >= 11 && day <= 13) || day % 10 !== 1 ? 'th' : day % 10 === 2 ? 'nd' : day % 10 === 3 ? 'rd' : 'th';
 
@@ -221,7 +211,6 @@ export class AdminDay
 
       return formattedDate;
     }
-    // ======================================= AI END =======================================
     
     dayInHistory() {
       // Checks if the day selected is in the past
@@ -245,12 +234,8 @@ export class AdminDay
     
         if (response.ok) {
           const content = await response.json();
-          // ======================================= AI START =======================================
-          // Use .then to execute code after the response has been fully received
           return Promise.resolve().then(() => {
             notify.showNotification(content);
-            // Use the stored content instead of re-reading the response body
-            // ======================================= AI END =======================================
             this.disableAllCourts();
             this.returnAllTimes();
           });
