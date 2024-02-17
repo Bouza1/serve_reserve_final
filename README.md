@@ -8,7 +8,7 @@
   - ``` pip install -r requirements.txt ```
   - ``` py run.py ```
 
-The application requries enivornment variables, access may be granted upon request.
+The application requries enivornment variables, access to the original enviroment variables may be granted upon request. Alternatively add your own to the env_var.env file.
 
 ## Testing:
 Tests Do Not Run In The Command Line!
