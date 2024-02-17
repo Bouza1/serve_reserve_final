@@ -27,12 +27,10 @@ function set_click_events(){
   }
 }
 
-// BELOW IS AI ==========================================
 function setupRadioButtons() {
   const radioButtons = document.querySelectorAll('.court_radio');
   radioButtons.forEach((radio) => {
     radio.addEventListener('change', (event) => {
-      // Clear the "active" class from all labels
       const labels = document.querySelectorAll('.btn-court-active');
       labels.forEach((label) => {
         label.classList.remove('btn-court-active');
@@ -47,7 +45,6 @@ function setupRadioButtons() {
     });
   });
 }
-// ====================================================
 
 function returnUser(){
     let user = document.getElementById('hidden_u').innerText;
@@ -109,29 +106,22 @@ confirm_del_acc_pword_inp.addEventListener('input', function(){
  }
 })
 
-// ==================== AI START ==========================
 const rows = document.querySelectorAll('.profile_row');
-
-// Loop through each row
 rows.forEach(row => {
   const tds = row.querySelectorAll('td');
   const editSvg = tds[2].querySelector('svg');
-  // Add a hover effect to each td within the row
   tds.forEach(td => {
     td.addEventListener('mouseenter', () => {
-      editSvg.style.visibility = 'visible'; // Show the SVG on hover
+      editSvg.style.visibility = 'visible';
     });
     td.addEventListener('mouseleave', () => {
-      editSvg.style.visibility = 'hidden'; // Hide the SVG when not hovering
+      editSvg.style.visibility = 'hidden';
     });
   });
-  // Add a click event to the entire row to focus on the middle td
   rows.forEach(row => {
     const input = row.querySelector('input');
-    // Add a click event to the entire row to focus on the input bobool
     row.addEventListener('click', () => {
-      input.focus(); // Focus on the input box when the row is clicked
+      input.focus();
     });
   });
 });
-// ==================== AI END ==========================
