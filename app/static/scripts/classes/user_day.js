@@ -115,31 +115,29 @@ export class Day
     {
       // Sets the min and max dates of the calender dorp down
       let date_inp = document.getElementById(element)
-      // ======================================= AI START =======================================
       let today = new Date();
       let thirtyDaysFromNow = new Date();
       thirtyDaysFromNow.setDate(today.getDate() + 30);
       let formattedToday = today.toISOString().split('T')[0];
       let formattedThirtyDaysFromNow = thirtyDaysFromNow.toISOString().split('T')[0];
-      // ======================================= AI END =======================================
       date_inp.min = formattedToday;
       date_inp.max = formattedThirtyDaysFromNow;
     }
       
 }
 
-export class TimeSlot /* AI */
+export class TimeSlot 
 {
-    constructor(time) /* AI */
+    constructor(time)
     {
-        this.time = time; /* AI */
-        this.button = this.createButton(); /* AI */
+        this.time = time;
+        this.button = this.createButton();
     }
 
     createButton() 
     {
       // Creates and returns the physical TimeSlot Button
-        const timeslot = document.createElement('button'); /* AI */
+        const timeslot = document.createElement('button'); 
         timeslot.classList.add('btn', 'btn-sm', 'btn-available', 'shadow', 'w-100', 'book-btn'); 
         timeslot.innerText = this.returnTimeString(); 
         timeslot.value = 0;
